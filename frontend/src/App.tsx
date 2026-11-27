@@ -1,3 +1,14 @@
+import {
+  Content,
+  Header,
+  HeaderGlobalAction,
+  HeaderGlobalBar,
+  HeaderName,
+  Loading,
+  SkipToContent,
+  Theme,
+} from '@carbon/react'
+import { Language, Logout } from '@carbon/icons-react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { setLanguage } from './i18n'
@@ -19,29 +30,44 @@ export default function App() {
     queryClient.setQueryData(['me'], null)
   }
 
+  const otherLang = i18n.language === 'am' ? 'en' : 'am'
+
   return (
-    <div className="shell">
-      <header className="topbar">
-        <strong>{t('appName')}</strong>
-        <div className="actions">
-          <label htmlFor="lang" className="visually-hidden">{t('language')}</label>
-          <select id="lang" value={i18n.language}
-            onChange={(e) => setLanguage(e.target.value as 'en' | 'am')}>
-            <option value="en">English</option>
-            <option value="am">አማርኛ</option>
-          </select>
-          {me.data && <button onClick={signOut}>{t('signOut')}</button>}
-        </div>
-      </header>
-      <main>
+    <>
+      <Theme theme="g100">
+        <Header aria-label={t('appName')}>
+          <SkipToContent>{t('skipToContent')}</SkipToContent>
+          <HeaderName href="#" prefix="">
+            {t('appName')}
+          </HeaderName>
+          <HeaderGlobalBar>
+            {me.data?.clinic_name && <span className="clinic-name">{me.data.clinic_name}</span>}
+            <HeaderGlobalAction
+              aria-label={otherLang === 'am' ? 'አማርኛ' : 'English'}
+              tooltipAlignment="end"
+              onClick={() => setLanguage(otherLang)}
+            >
+              <Language size={20} />
+            </HeaderGlobalAction>
+            {me.data && (
+              <HeaderGlobalAction aria-label={t('signOut')} tooltipAlignment="end" onClick={signOut}>
+                <Logout size={20} />
+              </HeaderGlobalAction>
+            )}
+          </HeaderGlobalBar>
+        </Header>
+      </Theme>
+      <Content id="main-content">
         {me.isLoading ? (
-          <p>{t('loading')}</p>
+          <div className="centered">
+            <Loading withOverlay={false} description={t('loading')} />
+          </div>
         ) : me.data ? (
           <Home me={me.data} />
         ) : (
           <Login onSignedIn={(user) => queryClient.setQueryData(['me'], user)} />
         )}
-      </main>
-    </div>
+      </Content>
+    </>
   )
 }

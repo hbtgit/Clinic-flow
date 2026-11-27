@@ -11,7 +11,7 @@ This repository holds the MVP described in the ClinicFlow Ethiopia BRD (v1.0, 20
 | Database | PostgreSQL 17 | Every clinic-owned row carries `clinic_id` |
 | Live queue | Django Channels + Redis | WebSocket updates within seconds (NFR-11) |
 | Background jobs | Celery + Redis | SMS reminders and exports off the request path |
-| Web app | React + TypeScript (Vite), i18next | Amharic and English UI (NFR-13) |
+| Web app | React + TypeScript (Vite), Carbon Design System, i18next | Same design system as OpenMRS 3; Amharic and English UI (NFR-13) |
 | Hosting | Docker Compose on one Linux server | Portable to an Ethiopian data centre (NFR-01) |
 
 ## Layout
@@ -24,7 +24,7 @@ backend/
   apps/accounts/     staff users, roles, login/logout/me API
   apps/scheduling/   practitioners and services (first clinic-scoped module)
   tests/             tenant isolation, role and audit tests
-frontend/            React web app (login, practitioner list, language switch)
+frontend/            React web app on Carbon (login, practitioner list, language switch)
 ```
 
 ## How clinic data is kept apart

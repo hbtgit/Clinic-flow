@@ -1,3 +1,4 @@
+import { Button, Form, InlineNotification, PasswordInput, Stack, TextInput, Tile } from '@carbon/react'
 import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { api, type Me } from '../lib/api'
@@ -27,16 +28,44 @@ export function Login({ onSignedIn }: { onSignedIn: (me: Me) => void }) {
   }
 
   return (
-    <form className="card login" onSubmit={submit}>
-      <h1>{t('appName')}</h1>
-      <label htmlFor="username">{t('username')}</label>
-      <input id="username" autoComplete="username" value={username}
-        onChange={(e) => setUsername(e.target.value)} required />
-      <label htmlFor="password">{t('password')}</label>
-      <input id="password" type="password" autoComplete="current-password" value={password}
-        onChange={(e) => setPassword(e.target.value)} required />
-      {error && <p className="error" role="alert">{error}</p>}
-      <button type="submit" disabled={busy}>{busy ? t('signingIn') : t('signIn')}</button>
-    </form>
+    <div className="login-wrap">
+      <Tile className="login-tile">
+        <Form onSubmit={submit}>
+          <Stack gap={6}>
+            <h1 className="cds--type-heading-04">{t('signIn')}</h1>
+            <TextInput
+              id="username"
+              labelText={t('username')}
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <PasswordInput
+              id="password"
+              labelText={t('password')}
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              showPasswordLabel={t('showPassword')}
+              hidePasswordLabel={t('hidePassword')}
+              required
+            />
+            {error && (
+              <InlineNotification
+                kind="error"
+                role="alert"
+                title={error}
+                hideCloseButton
+                lowContrast
+              />
+            )}
+            <Button type="submit" disabled={busy}>
+              {busy ? t('signingIn') : t('signIn')}
+            </Button>
+          </Stack>
+        </Form>
+      </Tile>
+    </div>
   )
 }

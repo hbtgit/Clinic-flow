@@ -1,0 +1,96 @@
+// Carbon is the design system OpenMRS 3 is built on. Plex web fonts are turned
+// off so the app makes no calls outside the clinic network and works offline;
+// Carbon falls back to system fonts, and Ethiopic glyphs use the OS font.
+@use '@carbon/react' with (
+  $css--font-face: false
+);
+@use '@carbon/react/scss/themes';
+@use '@carbon/react/scss/theme';
+
+:root {
+  @include theme.theme(themes.$g10);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include theme.theme(themes.$g100);
+    color-scheme: dark;
+  }
+}
+
+// O3-style brand bar (teal header, like the OpenMRS reference app).
+$brand: #005d5d;
+
+body {
+  margin: 0;
+  background: var(--cds-background);
+  color: var(--cds-text-primary);
+}
+
+.cds--header {
+  background-color: $brand;
+  border-bottom-color: $brand;
+}
+// The header sits inside <Theme theme="g100">, so its text and icons use the
+// dark-theme tokens; only the background is swapped for the brand colour.
+.cds--header .cds--btn.cds--btn--icon-only.cds--header__action svg {
+  fill: #fff;
+}
+.cds--header__action:hover {
+  background-color: #004a4a;
+}
+
+.clinic-name {
+  color: #fff;
+  padding: 0 1rem;
+  align-self: center;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 42rem) {
+  .clinic-name {
+    display: none;
+  }
+}
+
+.cds--content {
+  padding: 0;
+}
+
+.page {
+  padding: 2rem 1rem 3rem;
+  max-width: 72rem;
+}
+.page h1 {
+  margin-bottom: 0.25rem;
+}
+.page .subtitle {
+  color: var(--cds-text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.login-wrap {
+  min-height: calc(100vh - 3rem);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+.login-tile {
+  width: 100%;
+  max-width: 24rem;
+  padding: 2rem;
+}
+.login-tile h1 {
+  color: var(--cds-text-primary);
+}
+.login-tile .cds--btn {
+  width: 100%;
+  max-width: none;
+}
+
+.centered {
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 3rem);
+}
