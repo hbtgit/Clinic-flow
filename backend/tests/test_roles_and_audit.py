@@ -58,3 +58,21 @@ def test_login_then_me(clinic_a, make_user):
 
 def test_health_is_public(db):
     assert APIClient().get("/api/health/").data == {"status": "ok"}
+
+
+def test_login_requires_csrf_token(clinic_a, make_user):
+    user = make_user(clinic_a, Role.RECEPTIONIST)
+    client = APIClient(enforce_csrf_checks=True)
+
+    res = client.post(
+        "/api/auth/login/", {"username": user.username, "password": "correct-horse-battery"}
+    )
+    assert res.status_code == 403
+
+    client.get("/api/auth/csrf/")
+    res = client.post(
+        "/api/auth/login/",
+        {"username": user.username, "password": "correct-horse-battery"},
+        HTTP_X_CSRFTOKEN=client.cookies["csrftoken"].value,
+    )
+    assert res.status_code == 200
