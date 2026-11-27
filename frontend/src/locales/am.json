@@ -1,0 +1,12 @@
+{
+  "appName": "ClinicFlow",
+  "signIn": "ግባ",
+  "signOut": "ውጣ",
+  "username": "የተጠቃሚ ስም",
+  "password": "የይለፍ ቃል",
+  "signingIn": "በመግባት ላይ…",
+  "practitioners": "ሐኪሞች",
+  "noPractitioners": "እስካሁን ምንም ሐኪም አልተመዘገበም። የክሊኒኩ ሥራ አስኪያጅ ሊጨምር ይችላል።",
+  "loading": "በመጫን ላይ…",
+  "language": "ቋንቋ"
+}

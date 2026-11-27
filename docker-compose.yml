@@ -1,0 +1,54 @@
+# Local development and single-server production base.
+# All data stays on this machine's volumes, so it can run at an Ethiopian data centre (NFR-01).
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: clinicflow
+      POSTGRES_USER: clinicflow
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-clinicflow}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clinicflow"]
+      interval: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  api:
+    build: ./backend
+    command: sh -c "python manage.py migrate && gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 --reload"
+    environment: &backend-env
+      DJANGO_DEBUG: "true"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-dev-only-secret}
+      DATABASE_URL: postgres://clinicflow:${POSTGRES_PASSWORD:-clinicflow}@db:5432/clinicflow
+      REDIS_URL: redis://redis:6379/0
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,api
+      CSRF_TRUSTED_ORIGINS: http://localhost:5173
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  worker:
+    build: ./backend
+    command: celery -A config worker -l info
+    environment: *backend-env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

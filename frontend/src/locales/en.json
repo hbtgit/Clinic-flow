@@ -1,0 +1,12 @@
+{
+  "appName": "ClinicFlow",
+  "signIn": "Sign in",
+  "signOut": "Sign out",
+  "username": "Username",
+  "password": "Password",
+  "signingIn": "Signing in…",
+  "practitioners": "Practitioners",
+  "noPractitioners": "No practitioners yet. A clinic manager can add them.",
+  "loading": "Loading…",
+  "language": "Language"
+}

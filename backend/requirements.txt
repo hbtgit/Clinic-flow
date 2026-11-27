@@ -1,0 +1,10 @@
+Django==5.2.19
+djangorestframework==3.18.3
+channels==4.3.2
+channels_redis==4.3.0
+celery==5.7.0
+redis==8.2.0
+psycopg[binary]==3.3.9
+django-environ==0.14.0
+gunicorn==27.0.1
+uvicorn[standard]==0.54.0
