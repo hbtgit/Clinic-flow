@@ -22,9 +22,9 @@ backend/
   apps/core/         tenant-scoped base model and viewset, role permissions, audit log
   apps/tenants/      Clinic (the tenant)
   apps/accounts/     staff users, roles, login/logout/me API
-  apps/scheduling/   practitioners and services (first clinic-scoped module)
+  apps/scheduling/   practitioners, services, working hours, time off, appointments
   tests/             tenant isolation, role and audit tests
-frontend/            React web app on Carbon (login, practitioner list, language switch)
+frontend/            React web app on Carbon (appointments, schedules, practitioners; Amharic/English)
 ```
 
 ## How clinic data is kept apart
@@ -61,6 +61,14 @@ Then in another terminal: `cd frontend && npm install && npm run dev`.
 
 Create a clinic and staff users in `/admin/`, then sign in to the web app as a staff user.
 
+## How double-booking is prevented (FR-012)
+
+Every booking and reschedule goes through `apps/scheduling/booking.py:place()`, which locks the
+practitioner's row, checks working hours, time off and existing appointments, then saves. On
+PostgreSQL an exclusion constraint (migration `scheduling/0003`) also makes overlapping active
+appointments for one practitioner impossible at the database level. SQLite has no such
+constraint, so use PostgreSQL for anything beyond a quick local look.
+
 ## Checks
 
 ```bash
@@ -71,8 +79,8 @@ cd frontend && npm run lint && npm run build
 ## MVP build order
 
 1. **Foundations** (this commit): tenants, staff roles, audit log, auth, Amharic/English shell.
-2. **Schedules and bookings**: working hours, booking without double-booking, reschedule/cancel
-   (FR-010 to FR-016).
+2. **Schedules and bookings** (done): working hours, breaks, time off, booking without
+   double-booking, reschedule/cancel, day and week views, status counts (FR-010 to FR-016).
 3. **Check-in and queue**: walk-ins, queue states, live updates, anonymous waiting-room display
    (FR-020 to FR-037).
 4. **Reports, exports, SMS and pilot readiness**: daily counts, wait times, CSV export, consent-gated
