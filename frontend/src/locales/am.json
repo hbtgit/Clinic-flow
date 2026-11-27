@@ -8,5 +8,13 @@
   "practitioners": "ሐኪሞች",
   "noPractitioners": "እስካሁን ምንም ሐኪም አልተመዘገበም። የክሊኒኩ ሥራ አስኪያጅ ሊጨምር ይችላል።",
   "loading": "በመጫን ላይ…",
-  "language": "ቋንቋ"
+  "language": "ቋንቋ",
+  "skipToContent": "ወደ ዋናው ይዘት ዝለል",
+  "showPassword": "የይለፍ ቃል አሳይ",
+  "hidePassword": "የይለፍ ቃል ደብቅ",
+  "name": "ስም",
+  "title": "ማዕረግ",
+  "status": "ሁኔታ",
+  "active": "ንቁ",
+  "inactive": "ንቁ ያልሆነ"
 }
